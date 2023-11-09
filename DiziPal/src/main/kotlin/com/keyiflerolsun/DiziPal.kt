@@ -57,9 +57,9 @@ class DiziPal : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        //val document = app.get(url).document
 
-        val title       = document.selectFirst("div.episode-head h2")?.text()?.trim() ?: return null
+        //val title       = document.selectFirst("div.episode-head h2")?.text()?.trim() ?: return null
         /*
         val cover_style = document.selectFirst("div.cover")?.attr("style") ?: return null
         val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null*/
@@ -71,7 +71,7 @@ class DiziPal : MainAPI() {
         }*/
         return newMovieLoadResponse("Load Title", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
-            this.plot      = title
+            this.plot      = "title"
         }
 
 /*
