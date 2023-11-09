@@ -30,23 +30,23 @@ class DiziPal : MainAPI() {
     }
 
     private fun Element.toSearchResult(): SearchResponse? {
-        //val title1     = this.selectFirst("div.name")?.text()?.trim() ?: return null
-        //val title2     = this.selectFirst("div.episode")?.text()?.trim().toString().replace(". Sezon ","x").replace(". Bölüm","") ?: return null
-        //val title     = title1 + " " + title2
-        //val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
+        val title1     = this.selectFirst("div.name")?.text()?.trim() ?: return null
+        val title2     = this.selectFirst("div.episode")?.text()?.trim().toString().replace(". Sezon ","x").replace(". Bölüm","") ?: return null
+        val title     = title1 + " " + title2
+        val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
             
             /*val serie_home = Regex("""url\(['"]?(.*?)['"]?\)""").find(href)?.groupValues?.get(1)
              val poster_document = app.get(serie_home).document
              val cover_style = poster_document.selectFirst("div.cover")?.attr("style") ?: return null
              val posterUrl      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null*/
         
-        //val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
+        val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
-        //return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
+        return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
 
-        return newMovieSearchResponse("SearchSonuc", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) {
+        /*return newMovieSearchResponse("SearchSonuc", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
-        }
+        }*/
         
     }
 
@@ -65,12 +65,12 @@ class DiziPal : MainAPI() {
         val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
         
 
-        return newMovieLoadResponse(title, url, TvType.Movie, url) {
+        /*return newMovieLoadResponse(title, url, TvType.Movie, url) {
             this.posterUrl = poster 
-        }
-        /*return newMovieLoadResponse("Load Başlık", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
-            this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
         }*/
+        return newMovieLoadResponse("Load Başlık", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
+            this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
+        }
     }
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
