@@ -30,7 +30,7 @@ class DiziPal : MainAPI() {
     }
 
     private fun Element.toSearchResult(): SearchResponse? {
-        val title1     = this.selectFirst("div.name")?.text()?.trim() ?: return null
+        val title1     = this.selectFirst("div.name")?.text() ?: return null
         /*val title2     = this.selectFirst("div.episode")?.text()?.trim().toString().replace(". Sezon ","x").replace(". Bölüm","") ?: return null
         val title     = title1 + " " + title2 ?: return null
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
@@ -44,7 +44,7 @@ class DiziPal : MainAPI() {
 
         //return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
 
-        return newMovieSearchResponse("SearchSonuc", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) {
+        return newMovieSearchResponse(title1, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
         }
         
