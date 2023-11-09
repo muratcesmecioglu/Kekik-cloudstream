@@ -10,7 +10,7 @@ import com.lagradost.cloudstream3.utils.M3u8Helper
 import com.lagradost.cloudstream3.utils.Qualities
 
 class DiziPal : MainAPI() {
-    override var mainUrl            = "https://dizipal671.com"
+    override var mainUrl            = "https://www.dizipal671.com"
     override var name               = "DiziPal"
     override val hasMainPage        = true
     override var lang               = "tr"
@@ -58,18 +58,19 @@ class DiziPal : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        /*
         val document = app.get(url).document
 
         val title       = document.selectFirst("div.cover h5")?.text() ?: return null
         val cover_style = document.selectFirst("div.cover")?.attr("style") ?: return null
         val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
-        */
+        
 
-        //return newMovieLoadResponse(title, url, TvType.Movie, url) { this.posterUrl = poster  }
-        return newMovieLoadResponse("Load Başlık", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
-            this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
+        return newMovieLoadResponse(title, url, TvType.Movie, url) {
+            this.posterUrl = poster 
         }
+        /*return newMovieLoadResponse("Load Başlık", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
+            this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
+        }*/
     }
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
