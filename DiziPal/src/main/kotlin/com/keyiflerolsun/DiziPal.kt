@@ -72,7 +72,7 @@ class DiziPal : MainAPI() {
         }*/
         return newMovieLoadResponse("Load Title", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
-            this.plot      = "title"
+            this.plot      = title
         }
 
 /*
