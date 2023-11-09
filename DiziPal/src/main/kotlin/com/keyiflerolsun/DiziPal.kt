@@ -60,10 +60,20 @@ class DiziPal : MainAPI() {
         val serie_page_document = app.get(serie_page).document
         val cover_style = serie_page_document.selectFirst("div.cover")?.attr("style") ?: return null
         val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
-        
+
+        val year        = serie_page_document.selectXpath("//div[text()='Yapım Yılı']//following-sibling::div").text().trim().toIntOrNull()
+        val description = serie_page_document.selectFirst("div.summary p")?.text()?.trim()
+        val tags        = serie_page_document.selectXpath("//div[text()='Türler']//following-sibling::div").text().trim().split(" ").mapNotNull { it.trim() }
+        val rating      = serie_page_document.selectXpath("//div[text()='IMDB Puanı']//following-sibling::div").text().trim().toRatingInt()
+        val duration    = Regex("(\\d+)").find(serie_page_document.selectXpath("//div[text()='Ortalama Süre']//following-sibling::div").text() ?: "")?.value?.toIntOrNull()
+
         return newMovieLoadResponse(title, url, TvType.Movie, url) {
             this.posterUrl = poster
-            this.plot      = url
+            this.year      = year
+            this.plot      = description
+            this.tags      = tags
+            this.rating    = rating
+            this.duration  = duration
         }
         
     }
