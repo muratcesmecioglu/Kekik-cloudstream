@@ -24,7 +24,7 @@ class DiziPal : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val document = app.get(request.data).document
-        val home = document.select("div.episode-item").mapNotNull { it.toSearchResult() }
+        val home = document.select(".episode-item").mapNotNull { it.toSearchResult() }
         
         return newHomePageResponse(request.name, home, hasNext=false)
     }
