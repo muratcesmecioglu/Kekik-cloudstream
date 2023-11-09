@@ -59,7 +59,7 @@ class DiziPal : MainAPI() {
         val cover_style = document.selectFirst("div.cover")?.attr("style") ?: return null
         val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
 
-        return newMovieLoadResponse(title, url, TvType.Movie, url) {
+        return newMovieLoadResponse(title, "https://dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-1", TvType.Movie, "https://dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-1") {
             this.posterUrl = poster
         }
     }
