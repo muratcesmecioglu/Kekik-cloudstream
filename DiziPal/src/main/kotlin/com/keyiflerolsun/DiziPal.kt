@@ -70,9 +70,9 @@ class DiziPal : MainAPI() {
         /*return newMovieLoadResponse(title, url, TvType.Movie, url) {
             this.posterUrl = poster 
         }*/
-        return newMovieLoadResponse("Load Title1", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
+        return newMovieLoadResponse(title, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
-            this.plot      = title
+            this.plot      = url
         }
 
 /*
