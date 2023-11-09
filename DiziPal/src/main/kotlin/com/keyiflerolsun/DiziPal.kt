@@ -20,8 +20,8 @@ class DiziPal : MainAPI() {
 
     override val mainPage = mainPageOf(
         "${mainUrl}/diziler/son-bolumler" to "Son Bölümler",
-        "${mainUrl}/diziler?kelime=&durum=&tur=1&type=&siralama="  to "Aile",
-        "${mainUrl}/diziler?kelime=&durum=&tur=2&type=&siralama="  to "Aksiyon",
+        //"${mainUrl}/diziler?kelime=&durum=&tur=1&type=&siralama="  to "Aile",
+        //"${mainUrl}/diziler?kelime=&durum=&tur=2&type=&siralama="  to "Aksiyon",
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
