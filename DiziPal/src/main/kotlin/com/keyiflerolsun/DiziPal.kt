@@ -24,13 +24,13 @@ class DiziPal : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val document = app.get(request.data).document
-        val home = document.select(".episode-item").mapNotNull { it.toSearchResult() }
+        val home = document.select("div.episode-item").mapNotNull { it.toSearchResult() }
         
         return newHomePageResponse(request.name, home, hasNext=false)
     }
     
     private fun Element.toSearchResult(): SearchResponse? {
-        val title     = this.selectFirst("div.title")?.text() ?: return null
+        val title     = this.selectFirst("div.name")?.text() ?: return null
         //val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
         //val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
