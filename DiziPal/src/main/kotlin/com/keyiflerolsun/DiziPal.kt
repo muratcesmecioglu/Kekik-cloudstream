@@ -59,7 +59,7 @@ class DiziPal : MainAPI() {
     override suspend fun load(url: String): LoadResponse? {
         val document = app.get(url).document
 
-        val title       = document.selectFirst("div.episode-head h2")?.text().trim() ?: return null
+        val title       = document.selectFirst("div.episode-head h2")?.text()?.trim() ?: return null
         val cover_style = document.selectFirst("div.cover")?.attr("style") ?: return null
         val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
         
