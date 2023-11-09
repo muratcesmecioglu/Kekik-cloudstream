@@ -30,11 +30,11 @@ class DiziPal : MainAPI() {
     }
     
     private fun Element.toSearchResult(): SearchResponse? {
-        val title     = this.selectFirst("div.title")?.text() ?: return null
-        val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
-        val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
+        //val title     = this.selectFirst("div.title")?.text() ?: return null
+        //val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
+        //val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
-        return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
+        return newMovieSearchResponse("Search Başlık", "https://dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) { this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg" }
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
@@ -45,15 +45,10 @@ class DiziPal : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        //val document = app.get(url).document
 
-        val title       = document.selectFirst("div.episode-head h2")?.text() ?: return null
-
-        return newMovieLoadResponse(title, url, TvType.Movie, url) {
+        return newMovieLoadResponse("Movie Başlık", "https://dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
-            this.year      = 2023
-            this.plot      = "aciklama"
-            this.rating    = 0
         }
     }
 
