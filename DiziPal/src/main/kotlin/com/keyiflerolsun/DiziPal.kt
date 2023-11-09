@@ -26,11 +26,10 @@ class DiziPal : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val document = app.get(request.data).document
-
-        if (request.data.contains("/diziler/son-bolumler")) {
-            val home     = document.select("div.episode-item").mapNotNull { it.toSearchResultLast() }
+        val home = if (request.data.contains("/diziler/son-bolumler")) {
+             home     = document.select("div.episode-item").mapNotNull { it.toSearchResultLast() }
         } else {
-            val home     = document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
+             home     = document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
         }
         //val home     = document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
 
@@ -38,7 +37,9 @@ class DiziPal : MainAPI() {
     }
 
     private fun Element.toSearchResultLast(): SearchResponse? {
-        val title     = this.selectFirst("div.name")?.text() ?: return null
+        val title1     = this.selectFirst("div.name")?.text() ?: return null
+        val title2     = this.selectFirst("div.episoed")?.text() ?: return null
+        var title     = title1 + " " + title2
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
         val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
