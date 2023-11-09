@@ -20,21 +20,17 @@ class DiziPal : MainAPI() {
 
     override val mainPage = mainPageOf(
         "${mainUrl}/diziler/son-bolumler" to "Son Bölümler",
-        //"${mainUrl}/diziler?kelime=&durum=&tur=1&type=&siralama="  to "Aile",
-        //"${mainUrl}/diziler?kelime=&durum=&tur=2&type=&siralama="  to "Aksiyon",
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val document = app.get(request.data).document
         val home = document.select("div.episode-item").mapNotNull { it.toSearchResult() }
-        //val home     = document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
 
         return newHomePageResponse(request.name, home, hasNext=false)
     }
     
     private fun Element.toSearchResult(): SearchResponse? {
-        //val title     = this.selectFirst("span.title")?.text() ?: return null
-        val title     = this.selectFirst("div.title")?.text() ?: return null
+        val title     = this.selectFirst("div.title")?.text() ?: return "Hata1"
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
         val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
@@ -43,7 +39,6 @@ class DiziPal : MainAPI() {
 
     override suspend fun search(query: String): List<SearchResponse> {
         val document = app.get("${mainUrl}/diziler?kelime=${query}&durum=&tur=&type=&siralama=").document
-
         return document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
     }
 
@@ -53,22 +48,13 @@ class DiziPal : MainAPI() {
         val document = app.get(url).document
 
         val title       = document.selectFirst("div.episode-head h2")?.text() ?: return null
-        val cover_style = document.selectFirst("div.cover")?.attr("style") ?: return null
-        val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
-
-        val year        = document.selectXpath("//div[text()='Yapım Yılı']//following-sibling::div").text().trim().toIntOrNull()
-        val description = document.selectFirst("div.summary p")?.text()?.trim()
-        val tags        = document.selectXpath("//div[text()='Türler']//following-sibling::div").text().trim().split(" ").mapNotNull { it.trim() }
-        val rating      = document.selectXpath("//div[text()='IMDB Puanı']//following-sibling::div").text().trim().toRatingInt()
-        val duration    = Regex("(\\d+)").find(document.selectXpath("//div[text()='Ortalama Süre']//following-sibling::div").text() ?: "")?.value?.toIntOrNull()
 
         return newMovieLoadResponse(title, url, TvType.Movie, url) {
-            this.posterUrl = poster
-            this.year      = year
-            this.plot      = description
-            this.tags      = tags
-            this.rating    = rating
-            //this.duration  = duration
+            this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
+            this.year      = 2023
+            this.plot      = "aciklama"
+            this.tags      = "etiket"
+            this.rating    = 0
         }
     }
 
