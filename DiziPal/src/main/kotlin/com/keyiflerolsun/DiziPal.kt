@@ -42,7 +42,7 @@ class DiziPal : MainAPI() {
         
         val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
-        return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
+        return newMovieSearchResponse(title, "https://dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-1", TvType.Movie) { this.posterUrl = posterUrl }
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
