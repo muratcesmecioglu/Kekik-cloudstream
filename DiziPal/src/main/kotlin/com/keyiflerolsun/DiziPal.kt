@@ -30,7 +30,7 @@ class DiziPal : MainAPI() {
     }
     
     private fun Element.toSearchResult(): SearchResponse? {
-        val title     = this.selectFirst("div.title")?.text() ?: return "Hata1"
+        val title     = this.selectFirst("div.title")?.text() ?: return null
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
         val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
@@ -53,7 +53,6 @@ class DiziPal : MainAPI() {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
             this.year      = 2023
             this.plot      = "aciklama"
-            this.tags      = "etiket"
             this.rating    = 0
         }
     }
