@@ -21,36 +21,30 @@ class DiziPal : MainAPI() {
     override val mainPage = mainPageOf(
         "${mainUrl}/diziler?kelime=&durum=&tur=1&type=&siralama="  to "Aile",
         "${mainUrl}/diziler?kelime=&durum=&tur=2&type=&siralama="  to "Aksiyon",
-        "${mainUrl}/diziler?kelime=&durum=&tur=3&type=&siralama="  to "Animasyon",
-        "${mainUrl}/diziler?kelime=&durum=&tur=26&type=&siralama=" to "Anime",
-        "${mainUrl}/diziler?kelime=&durum=&tur=4&type=&siralama="  to "Belgesel",
-        "${mainUrl}/diziler?kelime=&durum=&tur=5&type=&siralama="  to "Bilimkurgu",
-        "${mainUrl}/diziler?kelime=&durum=&tur=6&type=&siralama="  to "Biyografi",
-        "${mainUrl}/diziler?kelime=&durum=&tur=7&type=&siralama="  to "Dram",
-        "${mainUrl}/diziler?kelime=&durum=&tur=25&type=&siralama=" to "Erotik",
-        "${mainUrl}/diziler?kelime=&durum=&tur=8&type=&siralama="  to "Fantastik",
-        "${mainUrl}/diziler?kelime=&durum=&tur=9&type=&siralama="  to "Gerilim",
-        "${mainUrl}/diziler?kelime=&durum=&tur=10&type=&siralama=" to "Gizem",
-        "${mainUrl}/diziler?kelime=&durum=&tur=11&type=&siralama=" to "Komedi",
-        "${mainUrl}/diziler?kelime=&durum=&tur=12&type=&siralama=" to "Korku",
-        "${mainUrl}/diziler?kelime=&durum=&tur=13&type=&siralama=" to "Macera",
-        "${mainUrl}/diziler?kelime=&durum=&tur=14&type=&siralama=" to "Müzik",
-        "${mainUrl}/diziler?kelime=&durum=&tur=16&type=&siralama=" to "Romantik",
-        "${mainUrl}/diziler?kelime=&durum=&tur=17&type=&siralama=" to "Savaş",
-        "${mainUrl}/diziler?kelime=&durum=&tur=18&type=&siralama=" to "Spor",
-        "${mainUrl}/diziler?kelime=&durum=&tur=19&type=&siralama=" to "Suç",
-        "${mainUrl}/diziler?kelime=&durum=&tur=20&type=&siralama=" to "Tarih",
-        "${mainUrl}/diziler?kelime=&durum=&tur=21&type=&siralama=" to "Western",
-        "${mainUrl}/diziler?kelime=&durum=&tur=24&type=&siralama=" to "Yerli",
+        "${mainUrl}/diziler/son-bolumler" to "Son Bölümler",
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val document = app.get(request.data).document
-        val home     = document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
+
+        val url = if (request.data.contains("/diziler/son-bolumler")) {
+            val home     = document.select("div.episode-item").mapNotNull { it.toSearchResultLast() }
+        } else {
+            val home     = document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
+        }
+        //val home     = document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
 
         return newHomePageResponse(request.name, home, hasNext=false)
     }
 
+    private fun Element.toSearchResultLast(): SearchResponse? {
+        val title     = this.selectFirst("div.name")?.text() ?: return null
+        val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
+        val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
+
+        return newTvSeriesSearchResponse(title, href, TvType.TvSeries) { this.posterUrl = posterUrl }
+    }
+    
     private fun Element.toSearchResult(): SearchResponse? {
         val title     = this.selectFirst("span.title")?.text() ?: return null
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
