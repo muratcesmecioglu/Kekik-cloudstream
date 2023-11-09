@@ -24,7 +24,9 @@ class DiziPal : MainAPI() {
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val document = app.get(request.data).document
-        val home = document.select("div.episode-item").mapNotNull { it.toSearchResult() }
+        
+        val home = newMovieSearchResponse("Başlık", "https://dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) { this.posterUrl = "https://image.tmdb.org/t/p/w1280/spzb00xxRAxDSqhLS1kZXzj0igc.jpg" }
+        
 
         return newHomePageResponse(request.name, home, hasNext=false)
     }
