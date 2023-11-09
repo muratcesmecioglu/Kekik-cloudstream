@@ -1,7 +1,7 @@
 # ☁️ CloudStream Eklentileri
 
 >
-> #### **[keyiflerolsun](https://github.com/keyiflerolsun) tarafından hazırlanan [Kekik-cloudstream](https://github.com/keyiflerolsun/Kekik-cloudstream) reposundaki eklentilerin benim tarafımdan yaptığım bazı geliştirmelerini içeren halidir.**
+> #### **[keyiflerolsun](https://github.com/keyiflerolsun) tarafından hazırlanan [Kekik-cloudstream](https://github.com/keyiflerolsun/Kekik-cloudstream) reposundaki eklentilere benim tarafımdan yapılan bazı geliştirmeleri içeren halidir.**
 >
 
 ### 💾 Kurulum
