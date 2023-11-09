@@ -30,11 +30,11 @@ class DiziPal : MainAPI() {
     }
     
     private fun Element.toSearchResult(): SearchResponse? {
-        //val title     = this.selectFirst("div.title")?.text() ?: return null
+        val title     = this.selectFirst("div.title")?.text() ?: return null
         //val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
         //val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
-        return newMovieSearchResponse("Search Başlık", "https://dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) { this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg" }
+        return newMovieSearchResponse(title, "https://dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) { this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg" }
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
