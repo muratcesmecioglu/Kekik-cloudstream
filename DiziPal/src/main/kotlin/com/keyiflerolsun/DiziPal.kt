@@ -35,13 +35,8 @@ class DiziPal : MainAPI() {
         val title     = title1 + " " + title2 ?: return null
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
             
-            /*
-            val serie_home = Regex("""url\(['"]?(.*?)['"]?\)""").find(href)?.groupValues?.get(1)
-             val poster_document = app.get(serie_home).document
-             val cover_style = poster_document.selectFirst("div.cover")?.attr("style") ?: return null
-             val posterUrl      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
-        */
-        val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
+        val poster_document = app.get("${mainUrl}/diziler?kelime=${title1}&durum=&tur=&type=&siralama=").document
+        val posterUrl = fixUrlNull(document.selectFirst("article.type2 ul li").selectFirst("img")?.attr("src"))
 
         return newMovieSearchResponse(title, href, TvType.Movie) {
             this.posterUrl = posterUrl
@@ -66,22 +61,10 @@ class DiziPal : MainAPI() {
         val cover_style = serie_page_document.selectFirst("div.cover")?.attr("style") ?: return null
         val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
         
-        
-
-        /*return newMovieLoadResponse(title, url, TvType.Movie, url) {
-            this.posterUrl = poster 
-        }*/
         return newMovieLoadResponse(title, url, TvType.Movie, url) {
             this.posterUrl = poster
             this.plot      = url
         }
-
-/*
-        return newMovieLoadResponse(title, url, TvType.Movie, url) {
-            this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
-            this.plot      = url.toString()
-        }*/
-        
         
     }
 
