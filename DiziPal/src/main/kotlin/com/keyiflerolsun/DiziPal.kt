@@ -60,18 +60,27 @@ class DiziPal : MainAPI() {
         val document = app.get(url).document
 
         val title       = document.selectFirst("div.episode-head h2")?.text()?.trim() ?: return null
+        /*
         val cover_style = document.selectFirst("div.cover")?.attr("style") ?: return null
-        val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
+        val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null*/
         
         
 
         /*return newMovieLoadResponse(title, url, TvType.Movie, url) {
             this.posterUrl = poster 
         }*/
-        return newMovieLoadResponse(title, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
+        return newMovieLoadResponse("Load Title", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
+            this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
+            this.plot      = title
+        }
+
+/*
+        return newMovieLoadResponse(title, url, TvType.Movie, url) {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
             this.plot      = url.toString()
-        }
+        }*/
+        
+        
     }
 
     override suspend fun loadLinks(data: String, isCasting: Boolean, subtitleCallback: (SubtitleFile) -> Unit, callback: (ExtractorLink) -> Unit): Boolean {
