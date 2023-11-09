@@ -31,20 +31,21 @@ class DiziPal : MainAPI() {
 
     private fun Element.toSearchResult(): SearchResponse? {
         val title1     = this.selectFirst("div.name")?.text() ?: return null
-        /*val title2     = this.selectFirst("div.episode")?.text()?.trim().toString().replace(". Sezon ","x").replace(". Bölüm","") ?: return null
+        val title2     = this.selectFirst("div.episode")?.text()?.trim().toString().replace(". Sezon ","x").replace(". Bölüm","") ?: return null
         val title     = title1 + " " + title2 ?: return null
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
             
+            /*
             val serie_home = Regex("""url\(['"]?(.*?)['"]?\)""").find(href)?.groupValues?.get(1)
              val poster_document = app.get(serie_home).document
              val cover_style = poster_document.selectFirst("div.cover")?.attr("style") ?: return null
              val posterUrl      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
-        
-        val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))*/
+        */
+        val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
         //return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
 
-        return newMovieSearchResponse(title1, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) {
+        return newMovieSearchResponse(title, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
         }
         
