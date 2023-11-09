@@ -89,20 +89,59 @@ class DiziPal : MainAPI() {
     override suspend fun load(url: String): LoadResponse? {
         val document = app.get(url).document
 
-        val title       = document.selectFirst("div.episode-head h2")?.text()?.trim() ?: return null
+        if (url.contains("/bolum-")) { //Bölümdür
 
-        val serie_page  = url.split("/").dropLast(2).joinToString("/")
-        val serie_page_document = app.get(serie_page).document
-        val cover_style = serie_page_document.selectFirst("div.cover")?.attr("style") ?: return null
+            val title       = document.selectFirst("div.episode-head h2")?.text()?.trim() ?: return null
+    
+            val serie_page  = url.split("/").dropLast(2).joinToString("/")
+            val serie_page_document = app.get(serie_page).document
+            val cover_style = serie_page_document.selectFirst("div.cover")?.attr("style") ?: return null
+            val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
+    
+            val year        = serie_page_document.selectXpath("//div[text()='Yapım Yılı']//following-sibling::div").text().trim().toIntOrNull()
+            val description = serie_page_document.selectFirst("div.summary p")?.text()?.trim()
+            val tags        = serie_page_document.selectXpath("//div[text()='Türler']//following-sibling::div").text().trim().split(" ").mapNotNull { it.trim() }
+            val rating      = serie_page_document.selectXpath("//div[text()='IMDB Puanı']//following-sibling::div").text().trim().toRatingInt()
+            val duration    = Regex("(\\d+)").find(serie_page_document.selectXpath("//div[text()='Ortalama Süre']//following-sibling::div").text() ?: "")?.value?.toIntOrNull()
+    
+            return newMovieLoadResponse(title, url, TvType.Movie, url) {
+                this.posterUrl = poster
+                this.year      = year
+                this.plot      = description
+                this.tags      = tags
+                this.rating    = rating
+                this.duration  = duration
+            }
+        } else { 
+
+
+
+
+        val title       = document.selectFirst("div.cover h5")?.text() ?: return null
+        val cover_style = document.selectFirst("div.cover")?.attr("style") ?: return null
         val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
 
-        val year        = serie_page_document.selectXpath("//div[text()='Yapım Yılı']//following-sibling::div").text().trim().toIntOrNull()
-        val description = serie_page_document.selectFirst("div.summary p")?.text()?.trim()
-        val tags        = serie_page_document.selectXpath("//div[text()='Türler']//following-sibling::div").text().trim().split(" ").mapNotNull { it.trim() }
-        val rating      = serie_page_document.selectXpath("//div[text()='IMDB Puanı']//following-sibling::div").text().trim().toRatingInt()
-        val duration    = Regex("(\\d+)").find(serie_page_document.selectXpath("//div[text()='Ortalama Süre']//following-sibling::div").text() ?: "")?.value?.toIntOrNull()
+        val year        = document.selectXpath("//div[text()='Yapım Yılı']//following-sibling::div").text().trim().toIntOrNull()
+        val description = document.selectFirst("div.summary p")?.text()?.trim()
+        val tags        = document.selectXpath("//div[text()='Türler']//following-sibling::div").text().trim().split(" ").mapNotNull { it.trim() }
+        val rating      = document.selectXpath("//div[text()='IMDB Puanı']//following-sibling::div").text().trim().toRatingInt()
+        val duration    = Regex("(\\d+)").find(document.selectXpath("//div[text()='Ortalama Süre']//following-sibling::div").text() ?: "")?.value?.toIntOrNull()
 
-        return newMovieLoadResponse(title, url, TvType.Movie, url) {
+        val episodes    = document.select("div.episode-item").mapNotNull {
+            val ep_name    = it.selectFirst("div.name")?.text()?.trim() ?: return@mapNotNull null
+            val ep_href    = fixUrlNull(it.selectFirst("a")?.attr("href")) ?: return@mapNotNull null
+            val ep_episode = it.selectFirst("div.episode")?.text()?.trim()?.split(" ")?.get(2)?.replace(".", "")?.toIntOrNull()
+            val ep_season  = it.selectFirst("div.episode")?.text()?.trim()?.split(" ")?.get(0)?.replace(".", "")?.toIntOrNull()
+
+            Episode(
+                data    = ep_href,
+                name    = ep_name,
+                season  = ep_season,
+                episode = ep_episode
+            )
+        }
+
+        return newTvSeriesLoadResponse(title, url, TvType.TvSeries, episodes) {
             this.posterUrl = poster
             this.year      = year
             this.plot      = description
@@ -110,6 +149,16 @@ class DiziPal : MainAPI() {
             this.rating    = rating
             this.duration  = duration
         }
+            
+
+
+            
+
+
+        }
+
+
+        
         
     }
 
