@@ -42,11 +42,11 @@ class DiziPal : MainAPI() {
         
         val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
-        return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
+        //return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
 
-        /*return newMovieSearchResponse("SearchSonuc", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) {
+        return newMovieSearchResponse("SearchSonuc", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
-        }*/
+        }
         
     }
 
@@ -68,7 +68,7 @@ class DiziPal : MainAPI() {
         /*return newMovieLoadResponse(title, url, TvType.Movie, url) {
             this.posterUrl = poster 
         }*/
-        return newMovieLoadResponse(title, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
+        return newMovieLoadResponse("Load başlık", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
         }
     }
