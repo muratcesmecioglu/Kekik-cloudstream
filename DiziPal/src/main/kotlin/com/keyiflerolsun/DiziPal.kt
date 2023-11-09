@@ -16,7 +16,7 @@ class DiziPal : MainAPI() {
     override var lang               = "tr"
     override val hasQuickSearch     = false
     override val hasDownloadSupport = true
-    override val supportedTypes     = setOf(TvType.TvSeries)
+    override val supportedTypes     = setOf(TvType.TvMovies)
 
     override val mainPage = mainPageOf(
         "${mainUrl}/diziler/son-bolumler" to "Son Bölümler",
@@ -38,7 +38,7 @@ class DiziPal : MainAPI() {
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
         val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
 
-        return newTvSeriesSearchResponse(title, href, TvType.TvSeries) { this.posterUrl = posterUrl }
+        return newMovieSearchResponse(title, href, TvType.TvSeries) { this.posterUrl = posterUrl }
     }
 
     override suspend fun search(query: String): List<SearchResponse> {
@@ -52,7 +52,7 @@ class DiziPal : MainAPI() {
     override suspend fun load(url: String): LoadResponse? {
         val document = app.get(url).document
 
-        val title       = document.selectFirst("div.cover h5")?.text() ?: return null
+        val title       = document.selectFirst("div.episode-head h2")?.text() ?: return null
         val cover_style = document.selectFirst("div.cover")?.attr("style") ?: return null
         val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
 
@@ -62,27 +62,13 @@ class DiziPal : MainAPI() {
         val rating      = document.selectXpath("//div[text()='IMDB Puanı']//following-sibling::div").text().trim().toRatingInt()
         val duration    = Regex("(\\d+)").find(document.selectXpath("//div[text()='Ortalama Süre']//following-sibling::div").text() ?: "")?.value?.toIntOrNull()
 
-        val episodes    = document.select("div.episode-item").mapNotNull {
-            val ep_name    = it.selectFirst("div.name")?.text()?.trim() ?: return@mapNotNull null
-            val ep_href    = fixUrlNull(it.selectFirst("a")?.attr("href")) ?: return@mapNotNull null
-            val ep_episode = it.selectFirst("div.episode")?.text()?.trim()?.split(" ")?.get(2)?.replace(".", "")?.toIntOrNull()
-            val ep_season  = it.selectFirst("div.episode")?.text()?.trim()?.split(" ")?.get(0)?.replace(".", "")?.toIntOrNull()
-
-            Episode(
-                data    = ep_href,
-                name    = ep_name,
-                season  = ep_season,
-                episode = ep_episode
-            )
-        }
-
-        return newTvSeriesLoadResponse(title, url, TvType.TvSeries, episodes) {
+        return newMovieLoadResponse(title, url, TvType.Movie, url) {
             this.posterUrl = poster
             this.year      = year
             this.plot      = description
             this.tags      = tags
             this.rating    = rating
-            this.duration  = duration
+            //this.duration  = duration
         }
     }
 
