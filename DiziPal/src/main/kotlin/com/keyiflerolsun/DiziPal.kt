@@ -9,6 +9,9 @@ import com.lagradost.cloudstream3.utils.ExtractorLink
 import com.lagradost.cloudstream3.utils.M3u8Helper
 import com.lagradost.cloudstream3.utils.Qualities
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
 class DiziPal : MainAPI() {
     override var mainUrl            = "https://www.dizipal671.com"
     override var name               = "DiziPal"
@@ -35,7 +38,9 @@ class DiziPal : MainAPI() {
         val title     = title1 + " " + title2 ?: return null
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
             
-        val poster_document = app.get("${mainUrl}/diziler?kelime=${title1}&durum=&tur=&type=&siralama=").document
+        val poster_document = withContext(Dispatchers.IO) {
+            app.get("${mainUrl}/diziler?kelime=${title1}&durum=&tur=&type=&siralama=").document
+        }
         val posterUrl = fixUrlNull(document.selectFirst("article.type2 ul li").selectFirst("img")?.attr("src"))
 
         return newMovieSearchResponse(title, href, TvType.Movie) {
