@@ -30,17 +30,17 @@ class DiziPal : MainAPI() {
     }
 
     private fun Element.toSearchResult(): SearchResponse? {
-        val title1     = this.selectFirst("div.name")?.text()?.trim() ?: return null
+        /*val title1     = this.selectFirst("div.name")?.text()?.trim() ?: return null
         val title2     = this.selectFirst("div.episode")?.text()?.trim().toString().replace(". Sezon ","x").replace(". Bölüm","") ?: return null
         val title     = title1 + " " + title2
         val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
             
-            /*val serie_home = Regex("""url\(['"]?(.*?)['"]?\)""").find(href)?.groupValues?.get(1)
+            val serie_home = Regex("""url\(['"]?(.*?)['"]?\)""").find(href)?.groupValues?.get(1)
              val poster_document = app.get(serie_home).document
              val cover_style = poster_document.selectFirst("div.cover")?.attr("style") ?: return null
-             val posterUrl      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null*/
+             val posterUrl      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
         
-        val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))
+        val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("src"))*/
 
         //return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
 
@@ -58,11 +58,12 @@ class DiziPal : MainAPI() {
     override suspend fun quickSearch(query: String): List<SearchResponse> = search(query)
 
     override suspend fun load(url: String): LoadResponse? {
-        val document = app.get(url).document
+        /*val document = app.get(url).document
 
         val title       = document.selectFirst("div.cover h5")?.text() ?: return null
         val cover_style = document.selectFirst("div.cover")?.attr("style") ?: return null
         val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
+        */
         
 
         /*return newMovieLoadResponse(title, url, TvType.Movie, url) {
