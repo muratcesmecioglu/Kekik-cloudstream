@@ -60,10 +60,11 @@ class DiziPal : MainAPI() {
         val document = app.get(url).document
 
         val title       = document.selectFirst("div.episode-head h2")?.text()?.trim() ?: return null
-        
-        /*
-        val cover_style = document.selectFirst("div.cover")?.attr("style") ?: return null
-        val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null*/
+
+        val serie_page  = url.split("/").dropLast(2).joinToString("/")
+        val serie_page_document = app.get(serie_page).document
+        val cover_style = serie_page_document.selectFirst("div.cover")?.attr("style") ?: return null
+        val poster      = Regex("""url\(['"]?(.*?)['"]?\)""").find(cover_style)?.groupValues?.get(1) ?: return null
         
         
 
@@ -71,7 +72,7 @@ class DiziPal : MainAPI() {
             this.posterUrl = poster 
         }*/
         return newMovieLoadResponse(title, url, TvType.Movie, url) {
-            this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
+            this.posterUrl = poster
             this.plot      = url
         }
 
