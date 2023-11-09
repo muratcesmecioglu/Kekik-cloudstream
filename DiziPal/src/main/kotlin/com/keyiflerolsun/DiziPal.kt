@@ -46,7 +46,7 @@ class DiziPal : MainAPI() {
         //return newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
 
         return newMovieSearchResponse(title, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie) {
-            this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
+            this.posterUrl = posterUrl
         }
         
     }
@@ -72,6 +72,7 @@ class DiziPal : MainAPI() {
         }*/
         return newMovieLoadResponse("Load başlık", "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6", TvType.Movie, "https://www.dizipal671.com/dizi/deneme-cekimi/sezon-1/bolum-6") {
             this.posterUrl = "https://www.themoviedb.org/t/p/original/in9idEuDCHh2FXieGbwlidolB3n.jpg"
+            this.plot      = url
         }
     }
 
