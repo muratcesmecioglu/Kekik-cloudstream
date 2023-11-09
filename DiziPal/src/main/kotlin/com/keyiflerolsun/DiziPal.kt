@@ -30,10 +30,10 @@ class DiziPal : MainAPI() {
     }
 
     private fun Element.toSearchResult(): SearchResponse? {
-        /*val title1     = this.selectFirst("div.name")?.text()?.trim() ?: return null
+        val title1     = this.selectFirst("div.name")?.text()?.trim() ?: return null
         val title2     = this.selectFirst("div.episode")?.text()?.trim().toString().replace(". Sezon ","x").replace(". Bölüm","") ?: return null
-        val title     = title1 + " " + title2
-        val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
+        val title     = title1 + " " + title2 ?: return null
+        /*val href      = fixUrlNull(this.selectFirst("a")?.attr("href")) ?: return null
             
             val serie_home = Regex("""url\(['"]?(.*?)['"]?\)""").find(href)?.groupValues?.get(1)
              val poster_document = app.get(serie_home).document
