@@ -27,9 +27,9 @@ class DiziPal : MainAPI() {
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val document = app.get(request.data).document
         val home = if (request.data.contains("/diziler/son-bolumler")) {
-             home     = document.select("div.episode-item").mapNotNull { it.toSearchResultLast() }
+             document.select("div.episode-item").mapNotNull { it.toSearchResultLast() }
         } else {
-             home     = document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
+             document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
         }
         //val home     = document.select("article.type2 ul li").mapNotNull { it.toSearchResult() }
 
